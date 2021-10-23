@@ -1,64 +1,45 @@
-
-#include <getopt.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <getopt.h>
 #include <string.h>
-
-enum modes {NONE, INDEX, SEARCH};
 
 int main(int argc, char** argv)
 {
 
-	char filename[100];
+	char textfile[100];
 	char queryfile[100];
-  
-	enum modes mode;
+	char algorithm[10];
+	
 	int index;
  	int o;
- 	mode = NONE;
+  
+	
   	static struct option long_options[] =
     	{
       		{"input",	required_argument, 0, 'i'},
-      		{"search",	required_argument, 0, 's'},
-      		{"query",	required_argument, 0, 'q'},
+      		{"output",	required_argument, 0, 'o'},
+      		{"algorithm",	required_argument, 0, 'a'},
       		{0, 0, 0, 0}
     	};
 
 
-	// extraction of arguments
-	while( (o = getopt_long( argc, argv, "i:s:q", long_options, &index)) != -1 )
+	//argument extraction
+	while( (o = getopt_long( argc, argv, "i:o:a:", long_options, &index)) != -1 )
 	{
+		printf("<%C>\n", o);
 		switch (o) {
+			
 			case 'i':
-        			printf("case i\n");
-				strcpy(filename, optarg);
+        			printf("intput file is: %s\n", optarg);
 				break;
-			case 's':
-			        printf("case s\n");
-				mode = SEARCH;
-				strcpy(filename, optarg);
+			case 'o':
+				printf("output file is: %s\n",optarg);
 				break;
-			case 'q':
-			        printf("case q\n");
-				strcpy(queryfile, optarg);
+			case 'a':
+				printf("algorithm is: %s\n",optarg);
 				break;
 		}
 	}
 
-
-	// verification
-	if (mode == NONE){
-		fprintf(stderr, "Use either –index or –search\n");
-		return 1;
-	}
-
-	if (mode == SEARCH && queryfile[0] == 0) {
-		fprintf(stderr, "Cannot search without a query\n");
-		return 1;
-	}
-
-
-
 	return 0;
 }
-
